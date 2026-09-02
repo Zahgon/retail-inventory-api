@@ -5,7 +5,7 @@ description = "REST API for retail inventory management"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "fastapi>=0.129.0",
+    "django>=5.2.0",
     "psycopg2-binary>=2.9.11",
     "pydantic>=2.12.5",
     "pydantic-settings>=2.12.0",
@@ -17,10 +17,24 @@ dependencies = [
     "alembic>=1.18.4",
 ]
 
+# Without this, setuptools' flat-layout auto-discovery sees `app`, `migrations`
+# and the runtime `logs` directory as rival top-level packages and refuses to
+# build, so the project cannot be installed from its own manifest.
+[tool.setuptools]
+packages = ["app"]
+
+# Every test is a plain function taking fixtures, so Django's own unittest
+# runner collects none of the 67. `tests/conftest.py` already points Django at
+# these settings, but from inside the suite, where a tool deciding HOW to run
+# the suite cannot see it; the pytest configuration is where that belongs.
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "app.settings"
+
 [dependency-groups]
 dev = [
-    "httpx>=0.28.1",
     "pytest>=9.0.2",
+    # Reads DJANGO_SETTINGS_MODULE above; without it that key is inert.
+    "pytest-django>=4.9.0",
     "pytest-cov>=7.0.0",
     "ruff>=0.15.1",
     "taskipy>=1.14.1",

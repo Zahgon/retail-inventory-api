@@ -1,7 +1,7 @@
 # Retail Inventory API
 
 ![Python](https://img.shields.io/badge/Python-3.11%2B-blue?style=flat-square&logo=python)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688?style=flat-square&logo=fastapi)
+![Django](https://img.shields.io/badge/Django-5.2%2B-092E20?style=flat-square&logo=django)
 ![SQLModel](https://img.shields.io/badge/SQLModel-ORM-red?style=flat-square)
 ![Alembic](https://img.shields.io/badge/Alembic-Migrations-6D2024?style=flat-square&logo=sqlalchemy)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791?style=flat-square&logo=postgresql)
@@ -22,7 +22,7 @@
 
 ## About
 
-A REST API for managing retail product inventory and variants. Built with FastAPI, SQLModel, and PostgreSQL, with structured JSON logging, centralised exception handling, and Docker support.
+A REST API for managing retail product inventory and variants. Built with Django, SQLModel, and PostgreSQL, with structured JSON logging, centralised exception handling, and Docker support.
 
 **Live API:** [retail-inventory-api-yati.onrender.com/docs](https://retail-inventory-api-yati.onrender.com/docs)
 

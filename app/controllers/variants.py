@@ -6,9 +6,8 @@ import logging
 from typing import Optional
 from uuid import UUID
 
-from sqlmodel import select
+from sqlmodel import Session, select
 
-from ..core import SessionDep
 from ..models import (
     ProductVariant,
     ProductVariantCreate,
@@ -19,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 def get_product_variants_controller(
-    product_id: UUID, session: SessionDep
+    product_id: UUID, session: Session
 ) -> list[ProductVariant]:
     """
     Fetches the variants of the selected product.
@@ -37,7 +36,7 @@ def get_product_variants_controller(
 
 
 def create_product_variant_controller(
-    product_id: UUID, variant: ProductVariantCreate, session: SessionDep
+    product_id: UUID, variant: ProductVariantCreate, session: Session
 ) -> ProductVariant:
     """
     Persists a new variant for the given product.
@@ -74,7 +73,7 @@ def create_product_variant_controller(
 
 
 def update_product_variant_controller(
-    variant_id: UUID, update_data: ProductVariantUpdate, session: SessionDep
+    variant_id: UUID, update_data: ProductVariantUpdate, session: Session
 ) -> ProductVariant:
     """
     Updates a product variant by its ID.
@@ -124,7 +123,7 @@ def update_product_variant_controller(
 
 
 def delete_product_variant_controller(
-    variant_id: UUID, session: SessionDep
+    variant_id: UUID, session: Session
 ) -> Optional[ProductVariant]:
     """
     Deletes the variants of a product from the database.

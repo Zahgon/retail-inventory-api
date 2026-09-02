@@ -7,9 +7,8 @@ with the PostgreSQL database.
 """
 
 import logging
-from typing import Annotated
+from contextlib import contextmanager
 
-from fastapi import Depends
 from sqlmodel import Session, SQLModel, create_engine
 
 from .config import config
@@ -29,7 +28,7 @@ def create_db_and_tables():
     """
     Scans all SQLModel classes with 'table=True' and creates them in PostgreSQL.
 
-    This is called during the FastAPI 'lifespan' startup phase to ensure
+    This is called during the application startup phase to ensure
     the database schema stays in sync with your Python models.
     """
     SQLModel.metadata.create_all(engine)
@@ -43,12 +42,13 @@ def get_session():
     Yields a Session object and ensures it is properly closed after the
     request is finished, even if an error occurs.
     """
-    # Use of Generator here so FastAPI can handle the 'teardown'.
+    # Use of Generator here so the view can handle the 'teardown'.
     # This prevents the database from running out of connections.
     with Session(engine) as session:
         yield session
 
 
-# SessionDep is a type alias that simplifies dependency injection in main.py.
-# It tells FastAPI: "Whenever you see SessionDep, call get_session() and give me the result."
-SessionDep = Annotated[Session, Depends(get_session)]
+# session_scope is the context manager every view opens around its work.
+# It replaces the dependency-injection alias the previous framework provided:
+# "Whenever a view needs a Session, call get_session() and close it afterwards."
+session_scope = contextmanager(get_session)

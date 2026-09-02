@@ -4,9 +4,8 @@ Analytics controllers: Business logic for generating reports and insights from t
 
 import logging
 
-from sqlmodel import func, select
+from sqlmodel import Session, func, select
 
-from ..core import SessionDep
 from ..models import (
     Product,
     ProductVariant,
@@ -15,7 +14,7 @@ from ..models import (
 logger = logging.getLogger(__name__)
 
 
-def get_inventory_value_controller(session: SessionDep):
+def get_inventory_value_controller(session: Session):
     """
     Calculates the aggregate value (price * quantity) of all inventory.
 

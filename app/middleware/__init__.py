@@ -1,5 +1,7 @@
-from .security_headers import security_headers_middleware
+from .exception_handler import ExceptionHandlerMiddleware
+from .security_headers import SecurityHeadersMiddleware
 
 __all__ = [
-    "security_headers_middleware",
+    "SecurityHeadersMiddleware",
+    "ExceptionHandlerMiddleware",
 ]

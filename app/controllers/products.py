@@ -7,9 +7,8 @@ import re
 from typing import Optional
 from uuid import UUID
 
-from sqlmodel import func, select
+from sqlmodel import Session, func, select
 
-from ..core import SessionDep
 from ..models import (
     Product,
     ProductCreate,
@@ -21,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 def get_all_products_controller(
-    session: SessionDep,
+    session: Session,
     offset: int = 0,
     limit: int = 100,
 ):
@@ -46,7 +45,7 @@ def sku_searchable(q: str) -> bool:
     return bool(re.match(pattern, q.strip()))
 
 
-def get_searchable_products_controller(q: str, session: SessionDep):
+def get_searchable_products_controller(q: str, session: Session):
     """
     Retrieves products based on a search query.
     """
@@ -62,7 +61,7 @@ def get_searchable_products_controller(q: str, session: SessionDep):
         return session.exec(statement).all()
 
 
-def get_product_controller(product_id: UUID, session: SessionDep) -> Optional[Product]:
+def get_product_controller(product_id: UUID, session: Session) -> Optional[Product]:
     """
     Fetches a single product record.
     """
@@ -73,7 +72,7 @@ def get_product_controller(product_id: UUID, session: SessionDep) -> Optional[Pr
     return product
 
 
-def create_product_controller(product: ProductCreate, session: SessionDep) -> Product:
+def create_product_controller(product: ProductCreate, session: Session) -> Product:
     """
     Persists a new product record.
 
@@ -114,7 +113,7 @@ def create_product_controller(product: ProductCreate, session: SessionDep) -> Pr
 
 
 def update_product_controller(
-    product_id: UUID, update_data: ProductUpdate, session: SessionDep
+    product_id: UUID, update_data: ProductUpdate, session: Session
 ) -> Product:
     """
     Updates specific fields of an existing product.
@@ -170,9 +169,7 @@ def update_product_controller(
     return db_product
 
 
-def delete_product_controller(
-    product_id: UUID, session: SessionDep
-) -> Optional[Product]:
+def delete_product_controller(product_id: UUID, session: Session) -> Optional[Product]:
     """
     Deletes a product from the database.
     """
